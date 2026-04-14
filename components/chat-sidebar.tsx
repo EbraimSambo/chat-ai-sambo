@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useChats } from "@/hooks/use-chats";
 import type { Chat } from "@/types/chat";
+import Image from "next/image";
 
 interface SidebarProps {
   collapsed: boolean;
@@ -32,10 +33,10 @@ export function ChatSidebar({ collapsed, onToggle, onMobileClose }: SidebarProps
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-4 border-b border-white/10">
         <div className={cn("flex items-center gap-2", collapsed && "md:hidden")}>
-          <div className="w-7 h-7 rounded-full bg-linear-to-br from-purple-400 to-blue-500 flex items-center justify-center shrink-0">
-            <span className="text-white text-xs font-bold">Z</span>
+          <div className="size-8 relative">
+            <Image src={"/icon-black.png"} fill alt="" />
           </div>
-          <span className="text-white font-semibold text-sm">Zyricon</span>
+          <span className="text-white font-semibold text-xl">SAPIENS AI</span>
         </div>
         <button onClick={onToggle} className="hidden md:flex text-white/60 hover:text-white transition-colors ml-auto">
           {collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}

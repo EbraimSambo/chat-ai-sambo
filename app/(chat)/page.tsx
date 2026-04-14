@@ -104,7 +104,7 @@ export default function WelcomePage() {
         <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-6 overflow-y-auto">
           <div className="flex flex-col items-center gap-4 w-full max-w-2xl">
             {/* Orb + título + pills */}
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-linear-to-br from-purple-500 via-blue-500 to-purple-800 shadow-[0_0_40px_rgba(139,92,246,0.5)]" />
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-linear-to-br from-purple-500 via-blue-500 to-purple-800 shadow-[0_0_40px_rgba(139,92,246,0.5)] animate-pulse" />
             <h1 className="text-white text-xl sm:text-2xl font-semibold text-center">
               Pronto para Criar Algo Novo?
             </h1>

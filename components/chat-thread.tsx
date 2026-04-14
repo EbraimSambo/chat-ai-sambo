@@ -32,7 +32,7 @@ export function ChatThread({ messages, isLoading, onRetry, animateId }: ChatThre
   const pairs = buildPairs(messages);
 
   return (
-    <div className="flex flex-col gap-4 max-w-2xl mx-auto px-4 sm:px-0 py-6">
+    <div className="flex flex-col gap-4 max-w-4xl mx-auto px-4 sm:px-0 py-6">
       {pairs.map((pair) => (
         <MessagePair
           key={pair.user.id}

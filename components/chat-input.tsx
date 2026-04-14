@@ -27,7 +27,7 @@ export function ChatInput({ onSubmit, isPending }: ChatInputProps) {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+    <div className="w-full max-w-4xl mx-auto rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
       <div className="flex items-start gap-2 px-3 sm:px-4 pt-3 pb-2">
         <Sparkles size={16} className="text-purple-400 mt-0.5 shrink-0" />
         <textarea
