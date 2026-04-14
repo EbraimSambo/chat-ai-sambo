@@ -15,6 +15,7 @@ import {
   Settings2,
   Lightbulb,
   FileText,
+  Menu,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -39,40 +40,64 @@ const featureCards = [
   },
 ];
 
-export function ChatMain() {
+interface ChatMainProps {
+  onMenuClick: () => void;
+}
+
+export function ChatMain({ onMenuClick }: ChatMainProps) {
   const [input, setInput] = useState("");
 
   return (
     <div className="flex flex-col h-full bg-linear-to-b from-[#1a0a2e] via-[#2d1050] to-[#1a0a2e]">
       {/* Top bar */}
-      <div className="flex items-center justify-between px-6 py-3 border-b border-white/10">
-        <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors">
-          <span>ChatGPT v4.0</span> {/* nome do modelo, não traduzir */}
-          <ChevronDown size={14} />
-        </button>
+      <div className="flex items-center justify-between px-3 sm:px-6 py-3 border-b border-white/10 gap-2">
         <div className="flex items-center gap-2">
+          {/* Mobile menu button */}
+          <button
+            onClick={onMenuClick}
+            className="md:hidden p-2 rounded-lg bg-white/10 hover:bg-white/15 text-white transition-colors"
+          >
+            <Menu size={16} />
+          </button>
+
           <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors">
+            <span className="hidden xs:inline">ChatGPT v4.0</span>
+            <span className="xs:hidden">GPT v4</span>
+            <ChevronDown size={14} />
+          </button>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors">
             <Settings2 size={14} />
             <span>Configuração</span>
           </button>
-          <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors">
+          {/* Mobile: icon only */}
+          <button className="sm:hidden p-2 rounded-lg bg-white/10 hover:bg-white/15 text-white transition-colors">
+            <Settings2 size={14} />
+          </button>
+
+          <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors">
             <Upload size={14} />
             <span>Exportar</span>
+          </button>
+          <button className="sm:hidden p-2 rounded-lg bg-white/10 hover:bg-white/15 text-white transition-colors">
+            <Upload size={14} />
           </button>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 gap-6 overflow-y-auto">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 gap-4 sm:gap-6 overflow-y-auto py-6">
         {/* Orb */}
-        <div className="w-20 h-20 rounded-full bg-linear-to-br from-purple-500 via-blue-500 to-purple-800 shadow-[0_0_40px_rgba(139,92,246,0.5)]" />
+        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-linear-to-br from-purple-500 via-blue-500 to-purple-800 shadow-[0_0_40px_rgba(139,92,246,0.5)]" />
 
-        <h1 className="text-white text-3xl font-semibold text-center">
+        <h1 className="text-white text-xl sm:text-3xl font-semibold text-center px-4">
           Pronto para Criar Algo Novo?
         </h1>
 
         {/* Quick action pills */}
-        <div className="flex items-center gap-3 flex-wrap justify-center">
+        <div className="flex items-center gap-2 flex-wrap justify-center">
           <QuickPill icon={<ImageIcon size={14} />} label="Criar Imagem" />
           <QuickPill icon={<Lightbulb size={14} />} label="Brainstorm" />
           <QuickPill icon={<FileText size={14} />} label="Fazer um plano" />
@@ -80,7 +105,7 @@ export function ChatMain() {
 
         {/* Input box */}
         <div className="w-full max-w-2xl rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
-          <div className="flex items-start gap-2 px-4 pt-4 pb-2">
+          <div className="flex items-start gap-2 px-3 sm:px-4 pt-3 sm:pt-4 pb-2">
             <Sparkles size={16} className="text-purple-400 mt-0.5 shrink-0" />
             <textarea
               value={input}
@@ -90,13 +115,13 @@ export function ChatMain() {
               className="flex-1 bg-transparent text-white placeholder-white/30 text-sm resize-none outline-none"
             />
           </div>
-          <div className="flex items-center justify-between px-4 pb-3">
-            <div className="flex items-center gap-1">
+          <div className="flex items-center justify-between px-3 sm:px-4 pb-3 gap-2">
+            <div className="flex items-center gap-0.5 sm:gap-1 overflow-x-auto">
               <ActionBtn icon={<Paperclip size={14} />} label="Anexar" />
-              <ActionBtn icon={<Settings size={14} />} label="Definições" />
-              <ActionBtn icon={<LayoutGrid size={14} />} label="Opções" />
+              <ActionBtn icon={<Settings size={14} />} label="Definições" hideLabel />
+              <ActionBtn icon={<LayoutGrid size={14} />} label="Opções" hideLabel />
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors">
                 <Mic size={14} />
               </button>
@@ -114,7 +139,7 @@ export function ChatMain() {
         </div>
 
         {/* Feature cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl pb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full max-w-2xl pb-4">
           {featureCards.map((card) => (
             <div
               key={card.title}
@@ -138,18 +163,26 @@ export function ChatMain() {
 
 function QuickPill({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
-    <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 text-white/80 text-xs transition-colors border border-white/10">
+    <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 text-white/80 text-xs transition-colors border border-white/10 whitespace-nowrap">
       {icon}
       {label}
     </button>
   );
 }
 
-function ActionBtn({ icon, label }: { icon: React.ReactNode; label: string }) {
+function ActionBtn({
+  icon,
+  label,
+  hideLabel,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  hideLabel?: boolean;
+}) {
   return (
-    <button className="flex items-center gap-1 px-2 py-1 rounded-lg text-white/50 hover:text-white hover:bg-white/10 text-xs transition-colors">
+    <button className="flex items-center gap-1 px-2 py-1 rounded-lg text-white/50 hover:text-white hover:bg-white/10 text-xs transition-colors whitespace-nowrap">
       {icon}
-      {label}
+      <span className={hideLabel ? "hidden sm:inline" : undefined}>{label}</span>
     </button>
   );
 }
