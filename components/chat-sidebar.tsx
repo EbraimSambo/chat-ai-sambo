@@ -48,7 +48,7 @@ export function ChatSidebar({ collapsed, onToggle, onMobileClose }: SidebarProps
       {/* New Chat */}
       <div className="px-3 py-3">
         <button
-          onClick={() => { router.push("/"); onMobileClose(); }}
+          onClick={() => { router.push("/?new=true"); onMobileClose(); }}
           className="flex items-center gap-2 w-full px-3 py-2 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors"
         >
           <MessageSquarePlus size={16} className="shrink-0" />

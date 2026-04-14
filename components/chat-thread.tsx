@@ -4,15 +4,17 @@ import { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import { Loader2, RotateCcw, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTypewriter } from "@/hooks/use-typewriter";
 import type { Message } from "@/types/chat";
 
 interface ChatThreadProps {
   messages: Message[];
   isLoading?: boolean;
   onRetry?: (prompt: string) => void;
+  animateId?: string | null;
 }
 
-export function ChatThread({ messages, isLoading, onRetry }: ChatThreadProps) {
+export function ChatThread({ messages, isLoading, onRetry, animateId }: ChatThreadProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,7 +34,12 @@ export function ChatThread({ messages, isLoading, onRetry }: ChatThreadProps) {
   return (
     <div className="flex flex-col gap-4 max-w-2xl mx-auto px-4 sm:px-0 py-6">
       {pairs.map((pair) => (
-        <MessagePair key={pair.user.id} pair={pair} onRetry={onRetry} />
+        <MessagePair
+          key={pair.user.id}
+          pair={pair}
+          onRetry={onRetry}
+          animateAssistantId={animateId ?? null}
+        />
       ))}
       <div ref={bottomRef} />
     </div>
@@ -61,10 +68,19 @@ function buildPairs(messages: Message[]): Pair[] {
   return pairs;
 }
 
-function MessagePair({ pair, onRetry }: { pair: Pair; onRetry?: (p: string) => void }) {
+function MessagePair({
+  pair,
+  onRetry,
+  animateAssistantId,
+}: {
+  pair: Pair;
+  onRetry?: (p: string) => void;
+  animateAssistantId: string | null;
+}) {
   const hasFailed =
     pair.user.id.startsWith("failed-") || pair.assistant?.id.startsWith("failed-");
   const isPending = pair.user.id.startsWith("optimistic-");
+  const shouldAnimate = pair.assistant?.id === animateAssistantId;
 
   return (
     <div className="flex flex-col gap-3">
@@ -72,7 +88,7 @@ function MessagePair({ pair, onRetry }: { pair: Pair; onRetry?: (p: string) => v
         <div className="flex justify-end">
           <div
             className={cn(
-              "max-w-[80%] rounded-2xl rounded-br-sm px-4 py-3 text-sm transition-opacity",
+              "max-w-[80%] w-fit rounded-2xl rounded-br-sm px-4 py-3 text-sm transition-opacity",
               hasFailed
                 ? "bg-red-900/40 border border-red-500/30 text-white/70"
                 : "bg-purple-600 text-white",
@@ -88,7 +104,7 @@ function MessagePair({ pair, onRetry }: { pair: Pair; onRetry?: (p: string) => v
         <div className="flex flex-col gap-1">
           <div
             className={cn(
-              "max-w-[80%] rounded-2xl rounded-bl-sm px-4 py-3 text-sm",
+              "max-w-[80%] w-fit rounded-2xl rounded-bl-sm px-4 py-3 text-sm",
               hasFailed
                 ? "bg-red-900/40 border border-red-500/30 text-white/70"
                 : "bg-white/10 text-white/90",
@@ -106,32 +122,10 @@ function MessagePair({ pair, onRetry }: { pair: Pair; onRetry?: (p: string) => v
                 <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-bounce [animation-delay:150ms]" />
                 <span className="w-1.5 h-1.5 rounded-full bg-white/60 animate-bounce [animation-delay:300ms]" />
               </span>
+            ) : shouldAnimate ? (
+              <TypewriterMarkdown content={pair.assistant.content} />
             ) : (
-              <ReactMarkdown
-                components={{
-                  code: ({ children, ...props }) => (
-                    <code className="bg-white/10 px-1 py-0.5 rounded text-xs font-mono" {...props}>
-                      {children}
-                    </code>
-                  ),
-                  pre: ({ children }) => (
-                    <pre className="bg-white/10 rounded-lg p-3 overflow-x-auto text-xs my-2">
-                      {children}
-                    </pre>
-                  ),
-                  p: ({ children }) => (
-                    <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>
-                  ),
-                  ul: ({ children }) => (
-                    <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>
-                  ),
-                  ol: ({ children }) => (
-                    <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>
-                  ),
-                }}
-              >
-                {pair.assistant.content}
-              </ReactMarkdown>
+              <MarkdownContent content={pair.assistant.content} />
             )}
           </div>
 
@@ -147,5 +141,41 @@ function MessagePair({ pair, onRetry }: { pair: Pair; onRetry?: (p: string) => v
         </div>
       )}
     </div>
+  );
+}
+
+// Anima o texto caracter a caracter, depois renderiza o markdown completo
+function TypewriterMarkdown({ content }: { content: string }) {
+  const { displayed, done } = useTypewriter(content);
+
+  return done ? (
+    <MarkdownContent content={content} />
+  ) : (
+    <p className="leading-relaxed whitespace-pre-wrap text-sm">
+      {displayed}
+      <span className="inline-block w-0.5 h-3.5 bg-white/70 ml-0.5 animate-pulse align-middle" />
+    </p>
+  );
+}
+
+function MarkdownContent({ content }: { content: string }) {
+  return (
+    <ReactMarkdown
+      components={{
+        code: ({ children, ...props }) => (
+          <code className="bg-white/10 px-1 py-0.5 rounded text-xs font-mono" {...props}>
+            {children}
+          </code>
+        ),
+        pre: ({ children }) => (
+          <pre className="bg-white/10 rounded-lg p-3 overflow-x-auto text-xs my-2">{children}</pre>
+        ),
+        p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
+        ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+        ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+      }}
+    >
+      {content}
+    </ReactMarkdown>
   );
 }
