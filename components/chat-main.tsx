@@ -21,21 +21,21 @@ import { useState } from "react";
 const featureCards = [
   {
     icon: <ImageIcon size={20} className="text-purple-300" />,
-    tag: "Create Image",
-    title: "Image Generator",
-    desc: "Create high-quality images instantly from text.",
+    tag: "Criar Imagem",
+    title: "Gerador de Imagens",
+    desc: "Crie imagens de alta qualidade instantaneamente a partir de texto.",
   },
   {
     icon: <Presentation size={20} className="text-purple-300" />,
-    tag: "Make Slides",
-    title: "AI Presentation",
-    desc: "Turn ideas into engaging, professional presentations.",
+    tag: "Fazer Slides",
+    title: "Apresentação IA",
+    desc: "Transforme ideias em apresentações profissionais e envolventes.",
   },
   {
     icon: <Code2 size={20} className="text-purple-300" />,
-    tag: "Generate Code",
-    title: "Dev Assistant",
-    desc: "Generate clean, production ready code in seconds.",
+    tag: "Gerar Código",
+    title: "Assistente Dev",
+    desc: "Gere código limpo e pronto para produção em segundos.",
   },
 ];
 
@@ -47,17 +47,17 @@ export function ChatMain() {
       {/* Top bar */}
       <div className="flex items-center justify-between px-6 py-3 border-b border-white/10">
         <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors">
-          <span>ChatGPT v4.0</span>
+          <span>ChatGPT v4.0</span> {/* nome do modelo, não traduzir */}
           <ChevronDown size={14} />
         </button>
         <div className="flex items-center gap-2">
           <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors">
             <Settings2 size={14} />
-            <span>Configuration</span>
+            <span>Configuração</span>
           </button>
           <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-sm transition-colors">
             <Upload size={14} />
-            <span>Export</span>
+            <span>Exportar</span>
           </button>
         </div>
       </div>
@@ -68,14 +68,14 @@ export function ChatMain() {
         <div className="w-20 h-20 rounded-full bg-linear-to-br from-purple-500 via-blue-500 to-purple-800 shadow-[0_0_40px_rgba(139,92,246,0.5)]" />
 
         <h1 className="text-white text-3xl font-semibold text-center">
-          Ready to Create Something New?
+          Pronto para Criar Algo Novo?
         </h1>
 
         {/* Quick action pills */}
         <div className="flex items-center gap-3 flex-wrap justify-center">
-          <QuickPill icon={<ImageIcon size={14} />} label="Create Image" />
+          <QuickPill icon={<ImageIcon size={14} />} label="Criar Imagem" />
           <QuickPill icon={<Lightbulb size={14} />} label="Brainstorm" />
-          <QuickPill icon={<FileText size={14} />} label="Make a plan" />
+          <QuickPill icon={<FileText size={14} />} label="Fazer um plano" />
         </div>
 
         {/* Input box */}
@@ -85,16 +85,16 @@ export function ChatMain() {
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask Anything..."
+              placeholder="Pergunte qualquer coisa..."
               rows={3}
               className="flex-1 bg-transparent text-white placeholder-white/30 text-sm resize-none outline-none"
             />
           </div>
           <div className="flex items-center justify-between px-4 pb-3">
             <div className="flex items-center gap-1">
-              <ActionBtn icon={<Paperclip size={14} />} label="Attach" />
-              <ActionBtn icon={<Settings size={14} />} label="Settings" />
-              <ActionBtn icon={<LayoutGrid size={14} />} label="Options" />
+              <ActionBtn icon={<Paperclip size={14} />} label="Anexar" />
+              <ActionBtn icon={<Settings size={14} />} label="Definições" />
+              <ActionBtn icon={<LayoutGrid size={14} />} label="Opções" />
             </div>
             <div className="flex items-center gap-2">
               <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors">
