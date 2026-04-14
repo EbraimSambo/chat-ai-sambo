@@ -1,14 +1,21 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance } from 'axios';
 
-const createAxiosInstance = (
-): AxiosInstance => {
+const createAxiosInstance = (): AxiosInstance => {
+  const instance = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_URL ?? '/api',
+    timeout: 50000,
+    headers: { 'Content-Type': 'application/json' },
+  });
 
-    const AxiosInstance = axios.create({
-        baseURL: process.env.NEXT_PUBLIC_API_URL as string,
-        timeout: 50000,
-    });
+  instance.interceptors.response.use(
+    (res) => res,
+    (error) => {
+      const message = error.response?.data?.error ?? error.message;
+      return Promise.reject(new Error(message));
+    }
+  );
 
-    return AxiosInstance;
+  return instance;
 };
 
-export { createAxiosInstance };
+export const api = createAxiosInstance();
